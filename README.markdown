@@ -11,10 +11,12 @@ You can install the stable version of Vimium from the
 
 Alternatively, you can install it from source:
 
-1. Navigate to `chrome://extensions`
-2. Toggle into Developer Mode
-3. Click on "Load Unpacked Extension..."
-4. Select the Vimium directory.
+1. Install [Coffeescript](http://coffeescript.org/#installation) (needed to build vimium).
+2. Run `cake build` in the Vimium directory.
+3. Navigate to `chrome://extensions`
+4. Toggle into Developer Mode
+5. Click on "Load Unpacked Extension..."
+6. Select the Vimium directory.
 
 The Options page can be reached via a link on the help dialog (hit `?`) or via the button next to Vimium on
 the Chrome Extensions page (`chrome://extensions`).
@@ -26,6 +28,7 @@ Modifier keys are specified as &lt;c-x&gt; &lt;m-x&gt;, &lt;a-x&gt; for ctrl+x, 
 respectively. See the next section for instructions on modifying these bindings.
 
 Navigating the current page:
+
     ?       show the help dialog for a list of all available keys
     h       scroll left
     j       scroll down
@@ -39,29 +42,43 @@ Navigating the current page:
     F       open a link in a new tab
     r       reload
     gs      view source
-    zi      zoom in
-    zo      zoom out
     i       enter insert mode -- all commands will be ignored until you hit esc to exit
     yy      copy the current url to the clipboard
+    yf      copy a link url to the clipboard
     gf      cycle forward to the next frame
 
+Navigating to new pages:
+
+    o       Open URL, bookmark, or history entry
+    O       Open URL, bookmark, history entry in a new tab
+    b       Open bookmark
+    B       Open bookmark in a new tab
+
 Using find:
+
     /       enter find mode -- type your search query and hit enter to search or esc to cancel
+            See here for advanced usage (regular expressions): https://github.com/philc/vimium/wiki/Find-Mode
     n       cycle forward to the next find match
     N       cycle backward to the previous find match
 
 Navigating your history:
+
     H       go back in history
     L       go forward in history
 
 Manipulating tabs:
+
     J, gT      go one tab left
     K, gt      go one tab right
+    g0         go to the first tab
+    g$         go to the last tab
     t          create tab
     x          close current tab
     X          restore closed tab (i.e. unwind the 'x' command)
+    T          search through your open tabs
 
 Additional advanced browsing commands:
+
     ]]      Follow the link labeled 'next' or '>'. Helpful for browsing paginated sites.
     [[      Follow the link labeled 'previous' or '<'. Helpful for browsing paginated sites.
     <a-f>   open multiple links in a new tab
@@ -69,8 +86,6 @@ Additional advanced browsing commands:
     gu      go up one level in the URL hierarchy
     zH      scroll all the way left
     zL      scroll all the way right
-    z0      reset zoom to default value
-
 
 Vimium supports command repetition so, for example, hitting '5t' will open 5 tabs in rapid succession. ESC (or
 &lt;c-[&gt;) will clear any partial commands in the queue and will also exit insert and find modes.
@@ -113,23 +128,87 @@ Shifts are automatically detected so, for example, `<c-&>` corresponds to ctrl+s
 
 Contributing
 ------------
-
 You'd like to fix a bug or implement a feature? Great! Check out the bugs on our issues tracker, or implement
 one of the suggestions there that have been tagged 'todo'. If you have a suggestion of your own, start a
-discussion on the issues tracker or on the [mailing list][list_url]. If it mirrors a similar feature in
-another browser or in Vim itself, let us know! Once you've picked something to work on, add a comment to the
-respective issue so others don't duplicate your effort.
+discussion on the issues tracker or on the [mailing list](http://groups.google.com/group/vimium-dev?hl=en). If
+it mirrors a similar feature in another browser or in Vim itself, let us know! Once you've picked something to
+work on, add a comment to the respective issue so others don't duplicate your effort.
+
+Vimium is written in Coffeescript, which compiles to Javascript. To build Vimium from source:
+
+1. Install [Coffeescript](http://coffeescript.org/#installation).
+2. Run `cake autobuild` from within your vimium directory. Any coffeescript files you change will now be automatically compiled to Javascript.
+3. `cake test` to run the tests.
 
 When you're done, send us a pull request on Github. Feel free to include a change to the CREDITS file with
 your patch.
 
-[list_url]: http://groups.google.com/group/vimium-dev?hl=en
-
-Some brief coding style guidelines: 1) follow the style already present in the file, 2) ensure your lines
+A few coding style guidelines: 1) follow the style already present in the file, 2) ensure your lines
 don't exceed 110 characters.
 
 Release Notes
 -------------
+
+1.38 (Unreleased)
+
+- 'O' now opens Vomnibar results in a new tab. 'B' does the same for bookmarks only.
+
+1.37 (07/07/2012)
+
+- Select the first result by default in Vomnibar tab and bookmark modes.
+
+1.36 (07/07/2012)
+
+- 'b' brings up a bookmark-only Vomnibar.
+- Better support for some bookmarklets.
+
+1.35 (07/05/2012)
+
+- Bugfixes.
+
+1.34 (07/03/2012)
+
+- A bugfix for bookmarklets in Vomnibar.
+
+1.33 (07/02/2012)
+
+- A Vomnibar, which allows you to open sites from history, bookmarks, and tabs using Vimium's UI. Type "o" to try it.
+
+1.32 (03/05/2012)
+
+- More tweaks to the next / previous link-detection algorithm.
+- Minor bug fixes.
+
+1.31 (02/28/2012)
+
+- Improve style of link hints, and use fewer characters for hints.
+- Add an option to hide the heads up display (HUD). Notably, the HUD obscures Facebook Chat's textbox.
+- Detection and following of next / previous links has been improved.
+- Addition of g0 and g$ commands, for switching tabs.
+- Addition of p/P commands for URL pasting.
+- A new find mode which optionally supports case sensitivity and regular expressions.
+- Bug fixes.
+
+1.30 (12/04/2011)
+
+- Support for image maps in link hints.
+- Counts now work with forward & backward navigation.
+- Tab & shift-tab to navigate bookmarks dialog.
+- An alternate link hints mode: type the title of a link to select it. You can enable it in Vimium's Advanced Preferences.
+- Bug fixes.
+
+1.29 (07/30/2011)
+
+- `yf` to copy a link hint url to the clipboard.
+- Scatter link hints to prevent clustering on dense sites.
+- Don't show insert mode notification unless you specifically hit `i`.
+- Remove zooming functionality now that Chrome does it all natively.
+
+1.28 (06/29/2011)
+
+- Support for opening bookmarks (`b` and `B`).
+- Support for contenteditable text boxes.
+- Speed improvements and bugfixes.
 
 1.27 (03/24/2011)
 
@@ -145,7 +224,6 @@ Release Notes
 -  Some sites are now excluded by default.
 -  View source (`gs`) now opens in a new tab.
 -  Support for browsing paginated sites using `]]` and `[[` to go forward and backward respectively.
--  `z0` will reset the zoom level for the current page.
 -  Many of the less-used commands are now marked as "advanced" and hidden in the help dialog by default, so
    that the core command set is more focused and approachable.
 -  Improvements to link hinting.
